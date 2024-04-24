@@ -1,20 +1,21 @@
 version: '3'
 services:
   predixy:
-    image: jerejerejen/predixy
+    image: haandol/predixy
     container_name: predixy
     volumes:
-      - /home/redis-test/predixy/conf:/etc/predixy/conf
+      - ./predixy/conf:/etc/predixy/conf
     ports:
       - "7617:7617"
     networks:
       redis-net:
+    depends_on:
+      - redis-server
 
   redis-server:
     image: redis:7-alpine
     container_name: redis-server
     volumes:
-      - ./redis_server.conf:/etc/redis/redis_server.conf
       - ./cluster.sh:/cluster.sh
     command: sh /cluster.sh
     networks:
@@ -84,6 +85,5 @@ services:
       redis-net:
 
 networks: 
-  redis-net: 
-    driver: bridge
-
+  redis-net:
+    external: true
