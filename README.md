@@ -11,3 +11,6 @@ docker stop {컨테이너 ID}
 # 특정 redis 서버 재시작
 docker ps
 docker start {컨테이너 ID}
+
+# 외부 프로젝트에서 사용하기
+port=7617
