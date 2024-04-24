@@ -1,0 +1,89 @@
+version: '3'
+services:
+  predixy:
+    image: jerejerejen/predixy
+    container_name: predixy
+    volumes:
+      - /home/redis-test/predixy/conf:/etc/predixy/conf
+    ports:
+      - "7617:7617"
+    networks:
+      redis-net:
+
+  redis-server:
+    image: redis:7-alpine
+    container_name: redis-server
+    volumes:
+      - ./redis_server.conf:/etc/redis/redis_server.conf
+      - ./cluster.sh:/cluster.sh
+    command: sh /cluster.sh
+    networks:
+      redis-net:
+    depends_on:
+      - redis-node1
+      - redis-node2
+      - redis-node3
+      - redis-node4
+      - redis-node5
+      - redis-node6
+
+  redis-node1:
+    image: redis:7-alpine
+    container_name: redis-node1
+    volumes:
+      - ./redis_6300.conf:/etc/redis/redis_6300.conf
+    command: redis-server /etc/redis/redis_6300.conf
+    networks:
+      redis-net:
+
+
+  redis-node2:
+    image: redis:7-alpine
+    container_name: redis-node2
+    volumes:
+      - ./redis_6301.conf:/etc/redis/redis_6301.conf
+    command: redis-server /etc/redis/redis_6301.conf
+    networks:
+      redis-net:
+
+  redis-node3:
+    image: redis:7-alpine
+    container_name: redis-node3
+    volumes:
+      - ./redis_6302.conf:/etc/redis/redis_6302.conf
+    command: redis-server /etc/redis/redis_6302.conf
+    networks:
+      redis-net:
+  redis-node4:
+    image: redis:7-alpine
+    container_name: redis-node4
+    volumes:
+      - ./redis_6400.conf:/etc/redis/redis_6400.conf
+    command: redis-server /etc/redis/redis_6400.conf
+    networks:
+      redis-net:
+
+
+  redis-node5:
+    image: redis:7-alpine
+    container_name: redis-node5
+    volumes:
+      - ./redis_6401.conf:/etc/redis/redis_6401.conf
+    command: redis-server /etc/redis/redis_6401.conf
+    networks:
+      redis-net:
+
+
+  redis-node6:
+    image: redis:7-alpine
+    container_name: redis-node6
+    volumes:
+      - ./redis_6402.conf:/etc/redis/redis_6402.conf
+    command: redis-server /etc/redis/redis_6402.conf
+    networks:
+      redis-net:
+
+networks: 
+  redis-net: 
+    driver: bridge
+
